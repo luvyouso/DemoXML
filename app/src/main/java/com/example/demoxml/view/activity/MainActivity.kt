@@ -3,9 +3,9 @@ package com.example.demoxml.view.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -22,7 +22,6 @@ import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import java.net.URL
 import java.util.Arrays.asList
-import java.util.HashMap
 
 
 class MainActivity : AppCompatActivity(), AbstractAdapter.ListItemInteractionListener {
@@ -39,6 +38,7 @@ class MainActivity : AppCompatActivity(), AbstractAdapter.ListItemInteractionLis
         const val SEARCH_READ = "search_read"
         const val WRITE = "write"
         const val EXTRA_DATA = "data_user"
+        var mException = ""
     }
 
     private var mUserAdapter: UserAdapter? = null
@@ -48,6 +48,10 @@ class MainActivity : AppCompatActivity(), AbstractAdapter.ListItemInteractionLis
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+            StrictMode.setThreadPolicy(policy)
+        }
         mListUser = ArrayList()
         mUserAdapter = UserAdapter(applicationContext, mListUser)
         mUserAdapter!!.setItemInteractionListener(this)
@@ -85,8 +89,20 @@ class MainActivity : AppCompatActivity(), AbstractAdapter.ListItemInteractionLis
             try {
                 val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
                 StrictMode.setThreadPolicy(policy)
-
                 val client = XmlRpcClient()
+
+//                val start_config = XmlRpcClientConfigImpl()
+//                start_config.serverURL = URL("https://18.216.8.144")
+//                val info = client.execute(
+//                    start_config, "start", emptyList<Any>()
+//                ) as Map<String, String>
+//
+//                val url = info["host"]
+//                val db = info["database"]
+//                val username = info["user"]
+//                val password = info["password"]
+//                Log.e(">>>>>>>>", url + "\n" + username)
+
                 val commonConfig = XmlRpcClientConfigImpl()
                 commonConfig.serverURL = URL(String.format(URL_COMMON, BASE_URL))
                 val uid = client.execute(
@@ -121,14 +137,15 @@ class MainActivity : AppCompatActivity(), AbstractAdapter.ListItemInteractionLis
                 data = Gson().toJson(dataUser)
 
             } catch (e: Exception) {
+                mException = e.toString()
             }
             return data
         }
 
         override fun onPostExecute(result: String?) {
             mProgressBar.visibility = View.GONE
-            if (result!!.isEmpty()){
-                Toast.makeText(applicationContext, "Please, check internet!", Toast.LENGTH_LONG).show()
+            if (result!!.isEmpty()) {
+                Toast.makeText(applicationContext, mException, Toast.LENGTH_LONG).show()
                 return
             }
             if (mListUser?.size!! > 0) mListUser?.clear()
