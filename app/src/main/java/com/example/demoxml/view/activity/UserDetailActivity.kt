@@ -91,7 +91,6 @@ class UserDetailActivity : AppCompatActivity() {
 
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(applicationContext, e.toString(), Toast.LENGTH_LONG).show()
             }
             return null
         }

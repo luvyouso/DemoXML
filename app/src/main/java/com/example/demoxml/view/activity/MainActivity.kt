@@ -119,41 +119,22 @@ class MainActivity : AppCompatActivity(), AbstractAdapter.ListItemInteractionLis
                     }
                 )) as Array<*>)
                 data = Gson().toJson(dataUser)
-                Log.e("dataUser", Gson().toJson(dataUser))
-
-                //            int id = 1;
-                //            models.execute("execute_kw", asList(
-                //                    db, uid, password,
-                //                    "todo.task", "write",
-                //                    asList(
-                //                            asList(id),
-                //                            new HashMap() {{
-                //                                put("name", "Item 1 update");
-                //                            }}
-                //                    )
-                //            ));
-                //            // get record name after having changed it
-                //            List update = asList((Object[]) models.execute("execute_kw", asList(
-                //                    db, uid, password,
-                //                    "todo.task", "name_get",
-                //                    asList(asList(id))
-                //            )));
-                //
-                //            Log.e("update", new Gson().toJson(update));
 
             } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(applicationContext, e.toString(), Toast.LENGTH_LONG).show()
             }
             return data
         }
 
         override fun onPostExecute(result: String?) {
+            mProgressBar.visibility = View.GONE
+            if (result!!.isEmpty()){
+                Toast.makeText(applicationContext, "Please, check internet!", Toast.LENGTH_LONG).show()
+                return
+            }
             if (mListUser?.size!! > 0) mListUser?.clear()
             val data = Gson().fromJson(result, Array<User>::class.java)
             mListUser!!.addAll(data)
             mUserAdapter?.notifyDataSetChanged()
-            mProgressBar.visibility = View.GONE
         }
     }
 }
