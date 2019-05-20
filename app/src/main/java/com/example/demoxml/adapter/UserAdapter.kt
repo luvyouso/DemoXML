@@ -1,6 +1,5 @@
-package com.example.demoxml.Adapter
+package com.example.demoxml.adapter
 
-import android.app.Notification
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

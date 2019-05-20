@@ -12,9 +12,9 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import com.example.demoxml.Adapter.AbstractAdapter
-import com.example.demoxml.Adapter.UserAdapter
 import com.example.demoxml.R
+import com.example.demoxml.adapter.AbstractAdapter
+import com.example.demoxml.adapter.UserAdapter
 import com.example.demoxml.model.User
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
@@ -90,18 +90,6 @@ class MainActivity : AppCompatActivity(), AbstractAdapter.ListItemInteractionLis
                 val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
                 StrictMode.setThreadPolicy(policy)
                 val client = XmlRpcClient()
-
-//                val start_config = XmlRpcClientConfigImpl()
-//                start_config.serverURL = URL("https://18.216.8.144")
-//                val info = client.execute(
-//                    start_config, "start", emptyList<Any>()
-//                ) as Map<String, String>
-//
-//                val url = info["host"]
-//                val db = info["database"]
-//                val username = info["user"]
-//                val password = info["password"]
-//                Log.e(">>>>>>>>", url + "\n" + username)
 
                 val commonConfig = XmlRpcClientConfigImpl()
                 commonConfig.serverURL = URL(String.format(URL_COMMON, BASE_URL))

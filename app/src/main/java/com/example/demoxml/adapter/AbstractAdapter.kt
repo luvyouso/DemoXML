@@ -1,4 +1,4 @@
-package com.example.demoxml.Adapter
+package com.example.demoxml.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
